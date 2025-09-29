@@ -3,19 +3,35 @@ package labo2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SystemeEquations {
+/*
+ * SystemeEquations qui hérite de Matrice :
+ * - Stocke la liste des équations pour affichage/égalité logique.
+ * - Met à jour la matrice (via assign) lors de la lecture.
+ */
+public class SystemeEquations extends Matrice {
     private final List<Equation> equations = new ArrayList<>();
+
+    public SystemeEquations() {
+        super();
+    }
 
     public void lire(String source) {
         if (source == null) throw new IllegalArgumentException("Source vide");
         String[] lines = source.split("\\r?\\n");
         equations.clear();
+        List<double[]> rows = new ArrayList<>();
         for (String line : lines) {
             String trimmed = line.trim();
             if (trimmed.isEmpty()) continue;
             Equation eq = new Equation();
             eq.lire(trimmed);
             equations.add(eq);
+            double[] c = eq.getCoeffs();
+            rows.add(new double[]{c[0], c[1], c[2], eq.getConstant()});
+        }
+        if (!rows.isEmpty()) {
+            double[][] dat = rows.toArray(new double[0][]);
+            assign(dat); // met à jour la matrice héritée
         }
     }
 

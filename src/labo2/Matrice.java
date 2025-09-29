@@ -8,7 +8,17 @@ public class Matrice {
 
 	private Vecteur[] lignes;
 
+	/* Constructeur par défaut (protégé) pour permettre l'héritage */
+	protected Matrice() {
+		this.lignes = new Vecteur[0];
+	}
+
 	public Matrice(double[][] dat) {
+		assign(dat);
+	}
+
+	/* Méthode protégée pour initialiser/assigner la matrice depuis un tableau */
+	protected void assign(double[][] dat) {
 		if (dat == null || dat.length == 0) {
 			throw new IllegalArgumentException("Dimensions inadmissibles");
 		}

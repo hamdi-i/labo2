@@ -4,21 +4,29 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Equation {
-    private final double[] coeffs; // x, y, z
+/*
+ * Equation qui hérite de Vecteur:
+ * - Les 3 premières composantes du vecteur représentent les coefficients (x, y, z).
+ * - La constante à droite du signe '=' est stockée séparément.
+ */
+public class Equation extends Vecteur {
     private double constant;
 
     public Equation() {
-        this.coeffs = new double[3];
+        super(3); // vecteur de 3 coefficients (x,y,z)
         this.constant = 0.0;
     }
 
     public Equation(double[] coeffs, double constant) {
+        super(validCoeffs(coeffs));
+        this.constant = constant;
+    }
+
+    private static double[] validCoeffs(double[] coeffs) {
         if (coeffs == null || coeffs.length != 3) {
             throw new IllegalArgumentException("Dimensions inadmissibles");
         }
-        this.coeffs = new double[]{coeffs[0], coeffs[1], coeffs[2]};
-        this.constant = constant;
+        return coeffs;
     }
 
     public void lire(String source) {
@@ -31,8 +39,10 @@ public class Equation {
         String left = sides[0].replace(" ", "");
         String right = sides[1].replace(" ", "");
 
-        // Réinitialiser
-        coeffs[0] = coeffs[1] = coeffs[2] = 0.0;
+        // Réinitialiser coefficients
+        set(0, 0.0);
+        set(1, 0.0);
+        set(2, 0.0);
 
         // Extraire les termes pour x, y, z
         Pattern p = Pattern.compile("([+-]?\\d*\\.?\\d*)\\s*([xyz])");
@@ -47,7 +57,7 @@ public class Equation {
                 c = Double.parseDouble(num);
             }
             int idx = indexOfVar(var.charAt(0));
-            coeffs[idx] += c;
+            set(idx, get(idx) + c);
         }
 
         // Constante du côté droit (suppose un nombre simple)
@@ -64,7 +74,7 @@ public class Equation {
     }
 
     public double[] getCoeffs() {
-        return new double[]{coeffs[0], coeffs[1], coeffs[2]};
+        return new double[]{get(0), get(1), get(2)};
     }
 
     public double getConstant() {
@@ -77,7 +87,7 @@ public class Equation {
         String[] vars = {"x", "y", "z"};
         boolean first = true;
         for (int i = 0; i < 3; i++) {
-            double c = coeffs[i];
+            double c = get(i);
             if (first) {
                 if (c < 0) {
                     sb.append("- ").append(Double.toString(Math.abs(c))).append(vars[i]);
@@ -102,24 +112,16 @@ public class Equation {
         if (this == other) return true;
         if (!(other instanceof Equation)) return false;
         Equation o = (Equation) other;
-        for (int i = 0; i < 3; i++) {
-            if (!UtilitairesAlgebre.egaliteDoublePrecision(this.coeffs[i], o.coeffs[i], UtilitairesAlgebre.EPSILON)) {
-                return false;
-            }
-        }
+        // Compare les coefficients via equals de Vecteur (avec tolérance)
+        if (!super.equals(o)) return false;
+        // Compare la constante avec tolérance
         return UtilitairesAlgebre.egaliteDoublePrecision(this.constant, o.constant, UtilitairesAlgebre.EPSILON);
     }
 
     @Override
     public int hashCode() {
-        long b0 = Double.doubleToLongBits(coeffs[0]);
-        long b1 = Double.doubleToLongBits(coeffs[1]);
-        long b2 = Double.doubleToLongBits(coeffs[2]);
+        int result = super.hashCode();
         long bc = Double.doubleToLongBits(constant);
-        int result = 1;
-        result = 31 * result + (int)(b0 ^ (b0 >> 32));
-        result = 31 * result + (int)(b1 ^ (b1 >> 32));
-        result = 31 * result + (int)(b2 ^ (b2 >> 32));
         result = 31 * result + (int)(bc ^ (bc >> 32));
         return result;
     }
