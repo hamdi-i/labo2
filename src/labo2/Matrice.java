@@ -46,11 +46,11 @@ public class Matrice {
 
 	/* Accès à un coefficient */
 	public double get(int i, int j) {
-		return lignes[i].getValeur(j);
+		return lignes[i].get(j);
 	}
 
 	public void set(int i, int j, double value) {
-		lignes[i].setValeur(j, value);
+		lignes[i].set(j, value);
 	}
 
 	/* Sous-matrice des 'l' premières lignes et 'c' premières colonnes */
@@ -106,19 +106,19 @@ public class Matrice {
 	public void Gauss() {
 		int noLigne = 0;
 		for (Vecteur ligne : lignes) {
-			double pivot = ligne.getValeur(noLigne);
+			double pivot = ligne.get(noLigne);
 			if (pivot != 0) {
 				double pivotInverse = 1.0 / pivot;
 				for (int i = 0; i < ligne.taille(); i++) {
-					ligne.setValeur(i, ligne.getValeur(i) * pivotInverse);
+					ligne.set(i, ligne.get(i) * pivotInverse);
 				}
 			}
 
 			for (Vecteur ligneElim : lignes) {
 				if (ligneElim != ligne) {
-					double f = ligneElim.getValeur(noLigne);
+					double f = ligneElim.get(noLigne);
 					for (int i = 0; i < ligneElim.taille(); ++i) {
-						ligneElim.setValeur(i, ligneElim.getValeur(i) - f * ligne.getValeur(i));
+						ligneElim.set(i, ligneElim.get(i) - f * ligne.get(i));
 					}
 				}
 			}
