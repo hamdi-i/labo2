@@ -1,4 +1,4 @@
-package algebre;
+package labo2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +29,15 @@ public class SystemeEquations {
 
     public Matrice matriceAugmentee() {
         int n = equations.size();
-        Matrice m = new Matrice(n, 4); // 3 variables + constante
+        double[][] dat = new double[n][4]; // 3 variables + constante
         for (int i = 0; i < n; i++) {
             double[] c = equations.get(i).getCoeffs();
-            m.set(i, 0, c[0]);
-            m.set(i, 1, c[1]);
-            m.set(i, 2, c[2]);
-            m.set(i, 3, equations.get(i).getConstant());
+            dat[i][0] = c[0];
+            dat[i][1] = c[1];
+            dat[i][2] = c[2];
+            dat[i][3] = equations.get(i).getConstant();
         }
-        return m;
+        return new Matrice(dat);
     }
 
     public Vecteur resoudre() {

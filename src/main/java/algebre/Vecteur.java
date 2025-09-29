@@ -1,4 +1,4 @@
-package algebre;
+package labo2;
 
 import java.util.Arrays;
 
@@ -6,7 +6,7 @@ public class Vecteur {
     private final double[] data;
 
     public Vecteur(int taille) {
-        if (taille &lt; 0) {
+        if (taille < 0) {
             throw new IllegalArgumentException("Dimensions inadmissibles");
         }
         this.data = new double[taille];
@@ -36,7 +36,7 @@ public class Vecteur {
     }
 
     public Vecteur sousVecteur(int taille) {
-        if (taille &lt; 0 || taille &gt; data.length) {
+        if (taille < 0 || taille > data.length) {
             throw new IllegalArgumentException("Dimensions inadmissibles");
         }
         return new Vecteur(Arrays.copyOf(this.data, taille));
@@ -50,9 +50,9 @@ public class Vecteur {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (int i = 0; i &lt; data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
             sb.append(Double.toString(data[i]));
-            if (i &lt; data.length - 1) {
+            if (i < data.length - 1) {
                 sb.append(" ");
             }
         }
@@ -66,7 +66,7 @@ public class Vecteur {
         if (!(other instanceof Vecteur)) return false;
         Vecteur o = (Vecteur) other;
         if (o.data.length != this.data.length) return false;
-        for (int i = 0; i &lt; data.length; i++) {
+        for (int i = 0; i < data.length; i++) {
             if (!UtilitairesAlgebre.egaliteDoublePrecision(this.data[i], o.data[i], UtilitairesAlgebre.EPSILON)) {
                 return false;
             }
@@ -80,7 +80,7 @@ public class Vecteur {
         int result = 1;
         for (double v : data) {
             long bits = Double.doubleToLongBits(v);
-            result = 31 * result + (int)(bits ^ (bits &gt;&gt; 32));
+            result = 31 * result + (int)(bits ^ (bits >> 32));
         }
         return result;
     }

@@ -1,4 +1,4 @@
-package algebre;
+package labo2;
 
 public class UtilitairesAlgebre {
 

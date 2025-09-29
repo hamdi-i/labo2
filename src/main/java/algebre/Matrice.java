@@ -1,4 +1,4 @@
-package algebre;
+package labo2;
 
 import java.util.Arrays;
 
@@ -8,7 +8,7 @@ public class Matrice {
     private final double[][] data;
 
     public Matrice(int lignes, int colonnes) {
-        if (lignes &lt; 0 || colonnes &lt; 0) {
+        if (lignes < 0 || colonnes < 0) {
             throw new IllegalArgumentException("Dimensions inadmissibles");
         }
         this.lignes = lignes;
@@ -29,7 +29,7 @@ public class Matrice {
         this.lignes = values.length;
         this.colonnes = cols;
         this.data = new double[lignes][colonnes];
-        for (int i = 0; i &lt; lignes; i++) {
+        for (int i = 0; i < lignes; i++) {
             this.data[i] = Arrays.copyOf(values[i], colonnes);
         }
     }
@@ -40,7 +40,7 @@ public class Matrice {
 
     public static Matrice creerMatriceIdentite(int taille) {
         Matrice m = new Matrice(taille, taille);
-        for (int i = 0; i &lt; taille; i++) {
+        for (int i = 0; i < taille; i++) {
             m.data[i][i] = 1.0;
         }
         return m;
@@ -63,11 +63,11 @@ public class Matrice {
     }
 
     public Matrice sousMatrice(int lignes, int colonnes) {
-        if (lignes &lt; 0 || colonnes &lt; 0 || lignes &gt; this.lignes || colonnes &gt; this.colonnes) {
+        if (lignes < 0 || colonnes < 0 || lignes > this.lignes || colonnes > this.colonnes) {
             throw new IllegalArgumentException("Dimensions inadmissibles");
         }
         Matrice m = new Matrice(lignes, colonnes);
-        for (int i = 0; i &lt; lignes; i++) {
+        for (int i = 0; i < lignes; i++) {
             System.arraycopy(this.data[i], 0, m.data[i], 0, colonnes);
         }
         return m;
@@ -75,7 +75,7 @@ public class Matrice {
 
     public double[][] coefficientsEnTableau() {
         double[][] out = new double[lignes][colonnes];
-        for (int i = 0; i &lt; lignes; i++) {
+        for (int i = 0; i < lignes; i++) {
             out[i] = Arrays.copyOf(data[i], colonnes);
         }
         return out;
@@ -84,14 +84,14 @@ public class Matrice {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i &lt; lignes; i++) {
+        for (int i = 0; i < lignes; i++) {
             sb.append("[");
-            for (int j = 0; j &lt; colonnes; j++) {
+            for (int j = 0; j < colonnes; j++) {
                 sb.append(Double.toString(data[i][j]));
-                if (j &lt; colonnes - 1) sb.append(" ");
+                if (j < colonnes - 1) sb.append(" ");
             }
             sb.append("]");
-            if (i &lt; lignes - 1) sb.append("\n");
+            if (i < lignes - 1) sb.append("\n");
         }
         return sb.toString();
     }
@@ -102,8 +102,8 @@ public class Matrice {
         if (!(other instanceof Matrice)) return false;
         Matrice o = (Matrice) other;
         if (o.lignes != this.lignes || o.colonnes != this.colonnes) return false;
-        for (int i = 0; i &lt; lignes; i++) {
-            for (int j = 0; j &lt; colonnes; j++) {
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
                 if (!UtilitairesAlgebre.egaliteDoublePrecision(this.data[i][j], o.data[i][j], UtilitairesAlgebre.EPSILON)) {
                     return false;
                 }
@@ -115,10 +115,10 @@ public class Matrice {
     @Override
     public int hashCode() {
         int result = 1;
-        for (int i = 0; i &lt; lignes; i++) {
-            for (int j = 0; j &lt; colonnes; j++) {
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
                 long bits = Double.doubleToLongBits(data[i][j]);
-                result = 31 * result + (int)(bits ^ (bits &gt;&gt; 32));
+                result = 31 * result + (int)(bits ^ (bits >> 32));
             }
         }
         result = 31 * result + lignes;

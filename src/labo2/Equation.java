@@ -1,4 +1,4 @@
-package algebre;
+package labo2;
 
 import java.util.Locale;
 import java.util.regex.Matcher;
